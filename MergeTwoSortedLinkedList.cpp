@@ -1,91 +1,79 @@
-#include<bits/stdc++.h>
 using namespace std;
-class node
-{
+#include<bits/stdc++.h>
+class Node{
 	public:
-	int data;
-	node* next;
-	node(int d)
-	{
-		data=d;
-		next=NULL;
-	}
+		int data;
+		Node *next;
+		Node(int data)
+		{
+			this->data=data;
+			next=NULL;
+		}
+		
 };
-
-node* merge(node* head,node* head2)
+Node* insert(int s)
 {
-	if(head==NULL)
+	int data=0;
+	Node*head=NULL;
+	Node*tail=NULL;
+	for(int i=0;i<s;i++)
 	{
-		return head2;
-	}
-	if(head2==NULL)
-	{
-		return head;
-	}
-	node* ans;
-	if(head->data<head2->data)
-	{
-		ans=head;
-		ans->next=merge(head->next,head2);
-	}
-	else
-	{
-		ans=head2;
-		ans->next=merge(head,head2->next);
-	}
-	return ans;
-}
-
-void InsertAtEnd(node* &head,node* &tail,int data)
-{
-	if(head==NULL)
-	{
-		head=tail=new node(data);
-	}
-	else
-	{
-		node* n=new node(data);
-		tail->next=n;
-		tail=n;
-		
+	
+		cin>>data;
+		Node *newnode=new Node(data);
+		if(head==NULL)
+		{
+			head=newnode;
+			tail=newnode;
+		}
+		else
+		{
+			tail->next=newnode;
+			tail=tail->next;
+		}
 		
 	}
-	return ;
-}
 
-void print(node* head)
+	return head;
+}
+void print(Node *head)
 {
-	while(head)
+	Node * temp=head;
+	while(temp!=NULL)
 	{
-		cout<<head->data<<" ";
-		head=head->next;
+		cout<<temp->data<<" ";
+		temp=temp->next;
 	}
 	cout<<endl;
 }
+Node* mergesort(Node* head1,Node* head2)
+{
+	if(head1==NULL)
+	return head2;
+	if(head2==NULL)
+	return head1;
+	if(head1->data < head2->data){
+	
+		head1->next=mergesort(head1->next,head2->next);
+		return head1;}
+	else
+	{
+	
+		head2->next=mergesort(head1,head2->next);
+		return head2;
+	}
+}
+
 int main()
 {
-	node* head=NULL;
-	node* tail=NULL;
-	
-	node* head2=NULL;
-	node* tail2=NULL;
 	int n;
 	cin>>n;
-	for(int i=0;i<n;i++)
-	{
-		int x;
-		cin>>x;
-		InsertAtEnd(head,tail,x);
-	}
-	for(int i=0;i<n;i++)
-	{
-		int x1;
-		cin>>x1;
-		InsertAtEnd(head2,tail2,x1);
-	}
-
-	node* res=merge(head,head2);
-	print(res);
-		
-	
+	Node *head1=insert(n);
+	print(head1);
+	int n1;
+	cin>>n1;
+	Node *head2=insert(n1);
+	print(head2);
+	Node* headF=mergesort(head1,head2);
+	print(headF);
 }
